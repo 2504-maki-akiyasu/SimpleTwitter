@@ -15,7 +15,7 @@ import chapter6.beans.UserMessage;
 import chapter6.logging.InitApplication;
 import chapter6.service.MessageService;
 
-@WebServlet(urlPatterns = { "/index.jsp" })
+@WebServlet(urlPatterns = { "/indForwex.jsp" })
 public class TopServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
