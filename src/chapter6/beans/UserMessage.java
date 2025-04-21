@@ -3,13 +3,14 @@ package chapter6.beans;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Message implements Serializable {
+public class UserMessage implements Serializable {
 
     private int id;
+    private String account;
+    private String name;
     private int userId;
     private String text;
     private Date createdDate;
-    private Date updatedDate;
 
     // getter/setter
     public int getId() {
@@ -17,6 +18,18 @@ public class Message implements Serializable {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public String getAccount() {
+		return account;
+	}
+	public void setAccount(String account) {
+		this.account = account;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	public int getUserId() {
 		return userId;
@@ -36,11 +49,4 @@ public class Message implements Serializable {
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
 	}
-	public Date getUpdatedDate() {
-		return updatedDate;
-	}
-	public void setUpdatedDate(Date updatedDate) {
-		this.updatedDate = updatedDate;
-	}
-
 }
