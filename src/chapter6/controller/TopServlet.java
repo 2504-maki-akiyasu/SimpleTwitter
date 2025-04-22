@@ -15,7 +15,7 @@ import chapter6.beans.UserMessage;
 import chapter6.logging.InitApplication;
 import chapter6.service.MessageService;
 
-@WebServlet(urlPatterns = { "/indForwex.jsp" })
+@WebServlet(urlPatterns = { "/index.jsp" })
 public class TopServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -39,7 +39,7 @@ public class TopServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
 
-	  log.info(new Object(){}.getClass().getEnclosingClass().getName() + 
+	  log.info(new Object(){}.getClass().getEnclosingClass().getName() +
         " : " + new Object(){}.getClass().getEnclosingMethod().getName());
 
         boolean isShowMessageForm = false;
