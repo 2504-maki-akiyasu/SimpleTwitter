@@ -20,17 +20,16 @@ import chapter6.logging.InitApplication;
 
 public class UserDao {
 
+	/**
+	* ロガーインスタンスの生成
+	*/
+	Logger log = Logger.getLogger("twitter");
 
-    /**
-    * ロガーインスタンスの生成
-    */
-    Logger log = Logger.getLogger("twitter");
-
-    /**
-    * デフォルトコンストラクタ
-    * アプリケーションの初期化を実施する。
-    */
-    public UserDao(){
+	/**
+	* デフォルトコンストラクタ
+	* アプリケーションの初期化を実施する。
+	*/
+	public UserDao(){
         InitApplication application = InitApplication.getInstance();
         application.init();
 
@@ -80,7 +79,6 @@ public class UserDao {
     }
 
     public User select(Connection connection, String accountOrEmail, String password) {
-
 
   	  log.info(new Object(){}.getClass().getEnclosingClass().getName() +
           " : " + new Object(){}.getClass().getEnclosingMethod().getName());
@@ -186,7 +184,7 @@ public class UserDao {
     	        sql.append("    account = ?, ");
     	        sql.append("    name = ?, ");
     	        sql.append("    email = ?, ");
-    	        if(!StringUtils.isEmpty(user.getPassword())) {
+    	        if(!StringUtils.isBlank(user.getPassword())) {
     	        	sql.append("    password = ?, ");
     	        }
     	        sql.append("    description = ?, ");
@@ -198,7 +196,7 @@ public class UserDao {
     	        ps.setString(1, user.getAccount());
     	        ps.setString(2, user.getName());
     	        ps.setString(3, user.getEmail());
-    	        if(!StringUtils.isEmpty(user.getPassword())) {
+    	        if(!StringUtils.isBlank(user.getPassword())) {
     	        	ps.setString(4, user.getPassword());
     	        	ps.setString(5, user.getDescription());
     	        	ps.setInt(6, user.getId());

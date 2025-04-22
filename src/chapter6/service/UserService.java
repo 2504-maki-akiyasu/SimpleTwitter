@@ -16,17 +16,16 @@ import chapter6.utils.CipherUtil;
 
 public class UserService {
 
+	/**
+	* ロガーインスタンスの生成
+	*/
+	Logger log = Logger.getLogger("twitter");
 
-    /**
-    * ロガーインスタンスの生成
-    */
-    Logger log = Logger.getLogger("twitter");
-
-    /**
-    * デフォルトコンストラクタ
-    * アプリケーションの初期化を実施する。
-    */
-    public UserService() {
+	/**
+	* デフォルトコンストラクタ
+	* アプリケーションの初期化を実施する。
+	*/
+	public UserService() {
         InitApplication application = InitApplication.getInstance();
         application.init();
 
@@ -58,6 +57,7 @@ public class UserService {
             close(connection);
         }
     }
+
     public User select(String accountOrEmail, String password) {
 
   	  log.info(new Object(){}.getClass().getEnclosingClass().getName() +
@@ -84,7 +84,7 @@ public class UserService {
           } finally {
               close(connection);
           }
-      }
+    }
 
     public User select(int userId) {
 
@@ -119,9 +119,9 @@ public class UserService {
         Connection connection = null;
         try {
             // 空白、空文字でなければパスワード暗号化
-        	if(!StringUtils.isEmpty(user.getPassword())) {
+        	if(!StringUtils.isBlank(user.getPassword())) {
         		String encPassword = CipherUtil.encrypt(user.getPassword());
-            	user.setPassword(encPassword);
+        		user.setPassword(encPassword);
         	}
 
             connection = getConnection();
