@@ -117,7 +117,7 @@ public class SettingServlet extends HttpServlet {
 		String email = user.getEmail();
 		int id = user.getId();
 
-		User typedAccount = new UserService().select(account);
+		User repeatedAccount = new UserService().select(account);
 
 		if (!StringUtils.isEmpty(name) && (20 < name.length())) {
 			errorMessages.add("名前は20文字以下で入力してください");
@@ -127,7 +127,7 @@ public class SettingServlet extends HttpServlet {
 			errorMessages.add("アカウント名を入力してください");
 		} else if (20 < account.length()) {
 			errorMessages.add("アカウント名は20文字以下で入力してください");
-		} else if (typedAccount != null && typedAccount.getId() != id) {
+		} else if (repeatedAccount != null && repeatedAccount.getId() != id) {
 			errorMessages.add("すでに存在するアカウントです");
 		}
 
