@@ -69,8 +69,9 @@
 							</a>
 						</span>
 
-						<span class="name"><c:out
-								value="${message.name}" /></span>
+						<span class="name">
+							<c:out value="${message.name}" />
+						</span>
 					</div>
 					<div class="text">
 						<c:out value="${message.text}" />
@@ -79,6 +80,14 @@
 						<fmt:formatDate value="${message.createdDate}"
 							pattern="yyyy/MM/dd HH:mm:ss" />
 					</div>
+					<c:if test="${loginUser.id == message.userId}">
+						<div class="delete">
+							<form action="deleteMessage" method="post">
+								<input type="hidden" name="messageId" value="${message.id}">
+								<input type="submit" value="削除">
+							</form>
+						</div>
+					</c:if>
 				</div>
 			</c:forEach>
 		</div>
