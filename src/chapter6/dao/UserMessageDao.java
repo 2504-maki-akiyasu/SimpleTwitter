@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import chapter6.beans.Message;
 import chapter6.beans.UserMessage;
 import chapter6.exception.SQLRuntimeException;
 import chapter6.logging.InitApplication;
@@ -99,6 +100,73 @@ public class UserMessageDao {
 				messages.add(message);
 			}
 			return messages;
+		} finally {
+			close(rs);
+		}
+	}
+
+	public Message selectMessage(Connection connection, Integer SelectedMessageId) {
+
+		log.info(new Object() {
+		}.getClass().getEnclosingClass().getName() +
+				" : " + new Object() {
+				}.getClass().getEnclosingMethod().getName());
+
+		PreparedStatement ps = null;
+		try {
+			StringBuilder sql = new StringBuilder();
+
+			sql.append("SELECT ");
+			sql.append(" * ");
+			/*sql.append("    messages.id as id, ");
+			sql.append("    messages.text as text, ");
+			sql.append("    messages.user_id as user_id, ");
+			sql.append("    users.account as account, ");
+			sql.append("    users.name as name, ");
+			sql.append("    messages.created_date as created_date ");*/
+			sql.append("FROM messages ");
+			/*sql.append("INNER JOIN users ");
+			sql.append("ON messages.user_id = users.id ");*/
+			sql.append("WHERE messages.id = ? ");
+
+			ps = connection.prepareStatement(sql.toString());
+
+			ps.setInt(1, SelectedMessageId);
+
+			ResultSet rs = ps.executeQuery();
+
+			List<Message> messages = toMessages(rs);
+			return messages.get(0);
+
+		} catch (SQLException e) {
+			log.log(Level.SEVERE, new Object() {
+			}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
+			throw new SQLRuntimeException(e);
+		} finally {
+			close(ps);
+		}
+	}
+
+	private List<Message> toMessages(ResultSet rs) throws SQLException {
+
+		log.info(new Object() {
+		}.getClass().getEnclosingClass().getName() +
+				" : " + new Object() {
+				}.getClass().getEnclosingMethod().getName());
+		List<Message> messages = new ArrayList<Message>();
+		try {
+			while (rs.next()) {
+				Message message = new Message();
+				message.setId(rs.getInt("id"));
+				message.setText(rs.getString("text"));
+				message.setUserId(rs.getInt("user_id"));
+				message.setCreatedDate(rs.getTimestamp("created_date"));
+				message.setUpdatedDate(rs.getTimestamp("updated_date"));
+
+				messages.add(message);
+			}
+			return messages;
+
 		} finally {
 			close(rs);
 		}

@@ -1,6 +1,8 @@
 package chapter6.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -8,8 +10,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
+
+import chapter6.beans.Message;
 import chapter6.logging.InitApplication;
+import chapter6.service.MessageService;
 
 @WebServlet(urlPatterns = { "/edit" })
 
@@ -40,6 +47,11 @@ public class EditServlet extends HttpServlet {
 				" : " + new Object() {
 				}.getClass().getEnclosingMethod().getName());
 
+		String messageId = request.getParameter("messageId");
+
+		Message editMessage = new MessageService().selectMessage(messageId);
+
+		request.setAttribute("editMessage", editMessage);
 		request.getRequestDispatcher("edit.jsp").forward(request, response);
 	}
 
@@ -52,8 +64,36 @@ public class EditServlet extends HttpServlet {
 				" : " + new Object() {
 				}.getClass().getEnclosingMethod().getName());
 
-		String afterMessage = request.getParameter("");
+		HttpSession session = request.getSession();
+        String afterMessage = request.getParameter("text");
+		List<String> errorMessages = new ArrayList<String>();
+        if (!isValid(afterMessage, errorMessages)) {
+            session.setAttribute("errorMessages", errorMessages);
+            response.sendRedirect("./");
+            return;
+        }
 
+        String messageId = request.getParameter("messageId");
 
-	}
+        new MessageService().update(afterMessage, messageId);
+        response.sendRedirect("./");
+    }
+
+    private boolean isValid(String text, List<String> errorMessages) {
+
+	  log.info(new Object(){}.getClass().getEnclosingClass().getName() +
+        " : " + new Object(){}.getClass().getEnclosingMethod().getName());
+
+        if (StringUtils.isBlank(text)) {
+            errorMessages.add("メッセージを入力してください");
+        } else if (140 < text.length()) {
+            errorMessages.add("140文字以下で入力してください");
+        }
+
+        if (errorMessages.size() != 0) {
+            return false;
+        }
+        return true;
+    }
+
 }
