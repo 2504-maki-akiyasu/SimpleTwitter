@@ -69,7 +69,7 @@ public class EditServlet extends HttpServlet {
 		List<String> errorMessages = new ArrayList<String>();
         if (!isValid(afterMessage, errorMessages)) {
             session.setAttribute("errorMessages", errorMessages);
-            response.sendRedirect("./");
+            request.getRequestDispatcher("edit.jsp").forward(request, response);
             return;
         }
 
@@ -84,8 +84,8 @@ public class EditServlet extends HttpServlet {
 	  log.info(new Object(){}.getClass().getEnclosingClass().getName() +
         " : " + new Object(){}.getClass().getEnclosingMethod().getName());
 
-        if (StringUtils.isBlank(text) && !StringUtils.contains(text, "\n")) {
-            errorMessages.add("メッセージを入力してください");
+        if (StringUtils.isBlank(text)) {
+            errorMessages.add("入力してください");
         } else if (140 < text.length()) {
             errorMessages.add("140文字以下で入力してください");
         }

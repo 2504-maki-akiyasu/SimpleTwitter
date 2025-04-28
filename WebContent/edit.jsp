@@ -12,6 +12,17 @@
     </head>
 <body>
 	<div class="main-contents">
+		<c:if test="${ not empty errorMessages }">
+			<div class="errorMessages">
+				<ul>
+					<c:forEach items="${errorMessages}" var="errorMessage">
+						<li><c:out value="${errorMessage}" />
+					</c:forEach>
+				</ul>
+			</div>
+			<c:remove var="errorMessages" scope="session" />
+		</c:if>
+
 		<div class="messages">
 			<div class="editMessage">
 				<form action="edit" method="post">
