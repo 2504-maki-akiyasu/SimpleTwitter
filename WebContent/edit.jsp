@@ -13,14 +13,12 @@
 <body>
 	<div class="main-contents">
 		<div class="messages">
-			<textarea name="text" cols="100" rows="5" class="tweet-box">${editMessage.text}
-			</textarea>
-
 			<div class="editMessage">
-				<form action="edit" method="get">
-					<input type="hidden" name="messageId" value="${message.id}">
+				<form action="edit" method="post">
+					<textarea name="edittext" cols="100" rows="5" class="tweet-box">${editMessage.text}
+					</textarea>
+					<input type="hidden" name="messageId" value="${editMessage.id}">
 					<input type="submit" value="更新">
-
 				</form>
 				<a href="./">戻る</a>
 			</div>

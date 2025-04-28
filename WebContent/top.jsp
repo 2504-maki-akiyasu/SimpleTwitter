@@ -10,6 +10,11 @@
 <title>簡易Twitter</title>
 
 <link href="./css/style.css" rel="stylesheet" type="text/css">
+<style>
+	pre {
+		white-space: pre-line;
+	}
+</style>
 </head>
 <body>
 	<div class="main-contents">
@@ -32,7 +37,8 @@
 					</h2>
 				</div>
 				<div class="account">
-					@<c:out value="${loginUser.account}" />
+					@
+					<c:out value="${loginUser.account}" />
 				</div>
 				<div class="description">
 					<c:out value="${loginUser.description}" />
@@ -63,18 +69,17 @@
 			<c:forEach items="${messages}" var="message">
 				<div class="message">
 					<div class="account-name">
-						<span class="account">
-							<a href="./?user_id=<c:out value="${message.userId}"/>">
-								<c:out value="${message.account}" />
-							</a>
-						</span>
-
-						<span class="name">
-							<c:out value="${message.name}" />
+						<span class="account"> <a
+							href="./?user_id=<c:out value="${message.userId}"/>"> <c:out
+									value="${message.account}" />
+						</a>
+						</span> <span class="name"> <c:out value="${message.name}" />
 						</span>
 					</div>
 					<div class="text">
-						<c:out value="${message.text}" />
+						<pre>
+							<c:out value="${message.text}" />
+						</pre>
 					</div>
 					<div class="date">
 						<fmt:formatDate value="${message.createdDate}"
