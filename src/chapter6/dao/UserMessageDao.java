@@ -118,15 +118,7 @@ public class UserMessageDao {
 
 			sql.append("SELECT ");
 			sql.append(" * ");
-			/*sql.append("    messages.id as id, ");
-			sql.append("    messages.text as text, ");
-			sql.append("    messages.user_id as user_id, ");
-			sql.append("    users.account as account, ");
-			sql.append("    users.name as name, ");
-			sql.append("    messages.created_date as created_date ");*/
 			sql.append("FROM messages ");
-			/*sql.append("INNER JOIN users ");
-			sql.append("ON messages.user_id = users.id ");*/
 			sql.append("WHERE messages.id = ? ");
 
 			ps = connection.prepareStatement(sql.toString());
@@ -136,7 +128,12 @@ public class UserMessageDao {
 			ResultSet rs = ps.executeQuery();
 
 			List<Message> messages = toMessages(rs);
-			return messages.get(0);
+
+			if(messages.size() == 0) {
+				return null;
+			} else {
+				return messages.get(0);
+			}
 
 		} catch (SQLException e) {
 			log.log(Level.SEVERE, new Object() {

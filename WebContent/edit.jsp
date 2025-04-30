@@ -26,12 +26,11 @@
 		<div class="messages">
 			<div class="editMessage">
 				<form action="edit" method="post">
-					<textarea name="edittext" cols="100" rows="5" class="tweet-box">${editMessage.text}
-					</textarea>
+					<textarea name="edittext" cols="100" rows="5" class="tweet-box">${editMessage.text}</textarea>
 					<input type="hidden" name="messageId" value="${editMessage.id}">
 					<input type="submit" value="更新">
-				</form>
 				<a href="./">戻る</a>
+				</form>
 			</div>
 		</div>
 	</div>

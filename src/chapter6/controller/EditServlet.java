@@ -47,9 +47,29 @@ public class EditServlet extends HttpServlet {
 				" : " + new Object() {
 				}.getClass().getEnclosingMethod().getName());
 
+		HttpSession session = request.getSession();
 		String messageId = request.getParameter("messageId");
+		List<String> errorMessages = new ArrayList<String>();
+
+		if(StringUtils.isBlank(messageId)) {
+			errorMessages.add("不正なパラメータが入力されました");
+			session.setAttribute("errorMessages", errorMessages);
+			response.sendRedirect("./");
+            return;
+		} else if(!StringUtils.isNumeric(messageId)) {
+			errorMessages.add("不正なパラメータが入力されました");
+			session.setAttribute("errorMessages", errorMessages);
+			response.sendRedirect("./");
+            return;
+		}
 
 		Message editMessage = new MessageService().selectMessage(messageId);
+		if(editMessage == null) {
+			errorMessages.add("不正なパラメータが入力されました");
+			session.setAttribute("errorMessages", errorMessages);
+			response.sendRedirect("./");
+            return;
+		}
 
 		request.setAttribute("editMessage", editMessage);
 		request.getRequestDispatcher("edit.jsp").forward(request, response);
@@ -65,15 +85,19 @@ public class EditServlet extends HttpServlet {
 				}.getClass().getEnclosingMethod().getName());
 
 		HttpSession session = request.getSession();
+        String messageId = request.getParameter("messageId");
         String afterMessage = request.getParameter("edittext");
 		List<String> errorMessages = new ArrayList<String>();
+
         if (!isValid(afterMessage, errorMessages)) {
             session.setAttribute("errorMessages", errorMessages);
+            Message editMessage = new Message();
+            editMessage.setId(Integer.parseInt(request.getParameter("messageId")));
+    		editMessage.setText(request.getParameter("edittext"));
+    		request.setAttribute("editMessage", editMessage);
             request.getRequestDispatcher("edit.jsp").forward(request, response);
             return;
         }
-
-        String messageId = request.getParameter("messageId");
 
         new MessageService().update(afterMessage, messageId);
         response.sendRedirect("./");
