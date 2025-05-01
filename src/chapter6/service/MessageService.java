@@ -60,7 +60,7 @@ public class MessageService {
 		}
 	}
 
-	public void update(String afterMessage, String messageId) {
+	public void update(Message editMessage) {
 
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
@@ -70,7 +70,7 @@ public class MessageService {
 		Connection connection = null;
 		try {
 			connection = getConnection();
-			new MessageDao().update(connection, afterMessage, messageId);
+			new MessageDao().update(connection, editMessage);
 			commit(connection);
 		} catch (RuntimeException e) {
 			rollback(connection);

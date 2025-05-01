@@ -51,12 +51,7 @@ public class EditServlet extends HttpServlet {
 		String messageId = request.getParameter("messageId");
 		List<String> errorMessages = new ArrayList<String>();
 
-		if (StringUtils.isBlank(messageId)) {
-			errorMessages.add("不正なパラメータが入力されました");
-			session.setAttribute("errorMessages", errorMessages);
-			response.sendRedirect("./");
-			return;
-		} else if (!StringUtils.isNumeric(messageId)) {
+		if (StringUtils.isBlank(messageId) || !StringUtils.isNumeric(messageId)) {
 			errorMessages.add("不正なパラメータが入力されました");
 			session.setAttribute("errorMessages", errorMessages);
 			response.sendRedirect("./");
@@ -84,22 +79,22 @@ public class EditServlet extends HttpServlet {
 				" : " + new Object() {
 				}.getClass().getEnclosingMethod().getName());
 
-		HttpSession session = request.getSession();
 		String messageId = request.getParameter("messageId");
 		String afterMessage = request.getParameter("edittext");
 		List<String> errorMessages = new ArrayList<String>();
 
+		Message editMessage = new Message();
+		editMessage.setId(Integer.parseInt(messageId));
+		editMessage.setText(afterMessage);
+
 		if (!isValid(afterMessage, errorMessages)) {
-			session.setAttribute("errorMessages", errorMessages);
-			Message editMessage = new Message();
-			editMessage.setId(Integer.parseInt(request.getParameter("messageId")));
-			editMessage.setText(request.getParameter("edittext"));
+			request.setAttribute("errorMessages", errorMessages);
 			request.setAttribute("editMessage", editMessage);
 			request.getRequestDispatcher("edit.jsp").forward(request, response);
 			return;
 		}
 
-		new MessageService().update(afterMessage, messageId);
+		new MessageService().update(editMessage);
 		response.sendRedirect("./");
 	}
 
