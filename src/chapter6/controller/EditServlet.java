@@ -51,24 +51,24 @@ public class EditServlet extends HttpServlet {
 		String messageId = request.getParameter("messageId");
 		List<String> errorMessages = new ArrayList<String>();
 
-		if(StringUtils.isBlank(messageId)) {
+		if (StringUtils.isBlank(messageId)) {
 			errorMessages.add("不正なパラメータが入力されました");
 			session.setAttribute("errorMessages", errorMessages);
 			response.sendRedirect("./");
-            return;
-		} else if(!StringUtils.isNumeric(messageId)) {
+			return;
+		} else if (!StringUtils.isNumeric(messageId)) {
 			errorMessages.add("不正なパラメータが入力されました");
 			session.setAttribute("errorMessages", errorMessages);
 			response.sendRedirect("./");
-            return;
+			return;
 		}
 
 		Message editMessage = new MessageService().selectMessage(messageId);
-		if(editMessage == null) {
+		if (editMessage == null) {
 			errorMessages.add("不正なパラメータが入力されました");
 			session.setAttribute("errorMessages", errorMessages);
 			response.sendRedirect("./");
-            return;
+			return;
 		}
 
 		request.setAttribute("editMessage", editMessage);
@@ -85,39 +85,41 @@ public class EditServlet extends HttpServlet {
 				}.getClass().getEnclosingMethod().getName());
 
 		HttpSession session = request.getSession();
-        String messageId = request.getParameter("messageId");
-        String afterMessage = request.getParameter("edittext");
+		String messageId = request.getParameter("messageId");
+		String afterMessage = request.getParameter("edittext");
 		List<String> errorMessages = new ArrayList<String>();
 
-        if (!isValid(afterMessage, errorMessages)) {
-            session.setAttribute("errorMessages", errorMessages);
-            Message editMessage = new Message();
-            editMessage.setId(Integer.parseInt(request.getParameter("messageId")));
-    		editMessage.setText(request.getParameter("edittext"));
-    		request.setAttribute("editMessage", editMessage);
-            request.getRequestDispatcher("edit.jsp").forward(request, response);
-            return;
-        }
+		if (!isValid(afterMessage, errorMessages)) {
+			session.setAttribute("errorMessages", errorMessages);
+			Message editMessage = new Message();
+			editMessage.setId(Integer.parseInt(request.getParameter("messageId")));
+			editMessage.setText(request.getParameter("edittext"));
+			request.setAttribute("editMessage", editMessage);
+			request.getRequestDispatcher("edit.jsp").forward(request, response);
+			return;
+		}
 
-        new MessageService().update(afterMessage, messageId);
-        response.sendRedirect("./");
-    }
+		new MessageService().update(afterMessage, messageId);
+		response.sendRedirect("./");
+	}
 
-    private boolean isValid(String text, List<String> errorMessages) {
+	private boolean isValid(String text, List<String> errorMessages) {
 
-	  log.info(new Object(){}.getClass().getEnclosingClass().getName() +
-        " : " + new Object(){}.getClass().getEnclosingMethod().getName());
+		log.info(new Object() {
+		}.getClass().getEnclosingClass().getName() +
+				" : " + new Object() {
+				}.getClass().getEnclosingMethod().getName());
 
-        if (StringUtils.isBlank(text)) {
-            errorMessages.add("入力してください");
-        } else if (140 < text.length()) {
-            errorMessages.add("140文字以下で入力してください");
-        }
+		if (StringUtils.isBlank(text)) {
+			errorMessages.add("入力してください");
+		} else if (140 < text.length()) {
+			errorMessages.add("140文字以下で入力してください");
+		}
 
-        if (errorMessages.size() != 0) {
-            return false;
-        }
-        return true;
-    }
+		if (errorMessages.size() != 0) {
+			return false;
+		}
+		return true;
+	}
 
 }
