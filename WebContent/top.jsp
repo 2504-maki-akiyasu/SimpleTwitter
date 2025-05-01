@@ -85,14 +85,6 @@
 						<fmt:formatDate value="${message.createdDate}"
 							pattern="yyyy/MM/dd HH:mm:ss" />
 					</div>
-					<div class = comment>
-						<c:if test="${ isShowMessageForm }">
-							<form action="comment" method="post"><br />
-								<textarea name="comment-text" cols="100" rows="5" class="tweet-box"></textarea>
-								<br /><input type="submit" value="返信">（140文字まで）
-							</form>
-						</c:if>
-					</div>
 					<c:if test="${loginUser.id == message.userId}">
 						<div class="editMessage">
 							<form action="edit" method="get">
@@ -107,6 +99,16 @@
 							</form>
 						</div>
 					</c:if>
+					<div class = comment>
+						<c:if test="${ isShowMessageForm }">
+							<form action="comment" method="post"><br />
+								<textarea name="comment-text" cols="100" rows="5" class="tweet-box"></textarea>
+								<br />
+								<input type="hidden" name="messageId" value="${message.id}">
+								<input type="submit" value="返信">（140文字まで）
+							</form>
+						</c:if>
+					</div>
 				</div>
 			</c:forEach>
 		</div>
