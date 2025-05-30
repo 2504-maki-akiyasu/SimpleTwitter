@@ -85,6 +85,13 @@
 						<fmt:formatDate value="${message.createdDate}"
 							pattern="yyyy/MM/dd HH:mm:ss" />
 					</div>
+					<c:if test="${comment.messageId == message.Id}">
+						<div class="comment-text">
+							<pre>
+								<c:out value="${comment.text}" />
+							</pre>
+						</div>
+					</c:if>
 					<c:if test="${loginUser.id == message.userId}">
 						<div class="editMessage">
 							<form action="edit" method="get">
